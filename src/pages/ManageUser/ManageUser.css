@@ -1,0 +1,155 @@
+.controllerButtons {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 20px;
+  top: 90px;
+}
+
+.button.icon {
+  height: 30px;
+  width: 30px;
+  padding: 0;
+  border: none;
+  margin-bottom: 0.5em;
+  background: none;
+}
+
+fieldset {
+  width: calc(100% - 10em);
+  margin: auto;
+  margin-bottom: 1.5em;
+  margin-top: 100px;
+  max-width: 900px;
+}
+
+div.inputField {
+  padding: 10px;
+  align-items: center;
+  margin: auto;
+  margin-bottom: 1.5em;
+}
+
+.inputField p.control {
+  margin-bottom: 1em;
+}
+
+div.inputField div {
+  /* width: 80%;
+  margin: auto; */
+}
+
+.csFeild {
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+}
+
+div.inputField div.control {
+  width: 100%;
+  margin: auto;
+}
+
+div.inputField div div.field {
+  margin-top: 0;
+  margin: auto;
+}
+
+div.inputField .textArea .control {
+  margin: 0 0;
+  width: auto;
+}
+
+.modal-user {
+  position: absolute;
+  top: 40;
+  left: 40;
+  right: 40;
+  bottom: 40;
+  z-index: 2001;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2000;
+  background-color: #646666;
+}
+
+.root-form-user {
+  margin: 20px 20%;
+  padding: 30px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.block-btn-form-user {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.block-btn-form-user > a {
+  margin: 20px;
+}
+
+.table {
+  background-color: whitesmoke;
+  color: #363636;
+  margin: auto;
+  margin-bottom: 1.5rem;
+  max-inline-size: max-content;
+  max-height:30rem;
+  overflow-y: scroll;
+  width: 100%;
+  display:block;
+}
+
+table.table.is-bordered tr th {
+  text-align: center;
+  vertical-align: middle;
+  margin: auto;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+table.table.is-bordered td {
+  text-align: center;
+  vertical-align: middle;
+  margin: auto;
+  padding: 14px 10px;
+  font-size: 12px;
+  max-height: 2em;
+}
+
+button.button.is-light {
+  width: 60px;
+  font-size: 8px;
+}
+
+td.edit, td.del {
+  width: 85px;
+}
+
+.button.table {
+  height: 100%;
+  width: auto;
+  border: none;
+  background: none;
+  margin: 0;
+  overflow: hidden;
+}
+
+.button.table img {
+  vertical-align: middle;
+}
+
+th.userName, th.name, th.surname, th.email {
+  max-width: 160px;
+}
+
+th.address {
+  max-width: 180px;
+}

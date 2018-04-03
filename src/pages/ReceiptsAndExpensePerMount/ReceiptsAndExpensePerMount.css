@@ -1,0 +1,21 @@
+.re-ex-mount-root { 
+  padding: 20px 0px; 
+} 
+ 
+.re-ex-mount-block-filter { 
+  width: 60%; 
+  max-width: 1000px; 
+  margin: 0 auto 10px auto; 
+} 
+ 
+.re-ex-mount-block-button { 
+  display: flex; 
+  flex-direction: row; 
+  justify-content: space-around; 
+} 
+ 
+.re-ex-mount-block-table { 
+  width: 60%; 
+  max-width: 1000px; 
+  margin: 0 auto 10px auto; 
+}
