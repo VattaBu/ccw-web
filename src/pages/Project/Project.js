@@ -38,6 +38,7 @@ let globalSumPredict = {
   exp: 0,
   total: 0
 };
+let projectValue = 0;
 
 moment.locale("th");
 
@@ -131,7 +132,7 @@ class Project extends React.Component {
       predict_revenue_det_id: "",
       period: "",
       price: 0,
-      price_bath: 0,
+      price_bath: 0
     },
     formPredictExp: {
       predict_expenditure_id: "",
@@ -155,10 +156,26 @@ class Project extends React.Component {
     {
       Header: "รายการ",
       columns: [
-        { Header: "ลำดับ", style: { textAlign: "center" }, Cell: ({ row }) => row._index + 1 },
-        { Header: "รหัสโครงการ", style: { textAlign: "center" }, accessor: "project_number" },
-        { Header: "ชื่อโครงการ", style: { textAlign: "center" }, accessor: "project_name" },
-        { Header: "ประเภทโครงการ", style: { textAlign: "center" }, accessor: "project_type_name" },
+        {
+          Header: "ลำดับ",
+          style: { textAlign: "center" },
+          Cell: ({ row }) => row._index + 1
+        },
+        {
+          Header: "รหัสโครงการ",
+          style: { textAlign: "center" },
+          accessor: "project_number"
+        },
+        {
+          Header: "ชื่อโครงการ",
+          style: { textAlign: "center" },
+          accessor: "project_name"
+        },
+        {
+          Header: "ประเภทโครงการ",
+          style: { textAlign: "center" },
+          accessor: "project_type_name"
+        },
         {
           Header: "วันที่เริ่มต้น",
           style: { textAlign: "center" },
@@ -240,35 +257,43 @@ class Project extends React.Component {
     {
       Header: "รายรับ",
       columns: [
-        { Header: "งวด", style: { textAlign: "center" }, accessor: "revenue.period" },
+        {
+          Header: "งวด",
+          style: { textAlign: "center" },
+          accessor: "revenue.period"
+        },
         // { Header: "จำนวน(เปอร์เซน)", accessor: "revenue.price" },
         {
           Header: "จำนวน(บาท)",
           style: { textAlign: "center" },
-          id: 'price_bath',
+          id: "price_bath",
           accessor: d => this.calcucalePredictRevBath(d.revenue.price),
-          Footer: (data) => {
-            console.log('data =>' , data)
+          Footer: data => {
+            console.log("data =>", data);
             this.calculateSumPredict();
-            return (<span>รวม: {globalSumPredict.rev}</span>)
-          },
-        },
-      ],
+            return <span>รวม: {globalSumPredict.rev}</span>;
+          }
+        }
+      ]
     },
     {
       Header: "รายจ่าย",
       columns: [
-        { Header: "งวด", style: { textAlign: "center" }, accessor: "expenditure.period" },
+        {
+          Header: "งวด",
+          style: { textAlign: "center" },
+          accessor: "expenditure.period"
+        },
         {
           Header: "จำนวน(บาท)",
           style: { textAlign: "center" },
           accessor: "expenditure.price",
           Footer: () => {
             this.calculateSumPredict();
-            return (<span>รวม: {globalSumPredict.exp}</span>)
-          },
+            return <span>รวม: {globalSumPredict.exp}</span>;
+          }
         }
-      ],
+      ]
     },
     {
       Header: "เมนู",
@@ -350,17 +375,27 @@ class Project extends React.Component {
               .format("DD/MM/YYYY");
           }
         },
-        { Header: "จำนวน(%)", style: { textAlign: "center" }, accessor: "price_per" },
+        {
+          Header: "จำนวน(%)",
+          style: { textAlign: "center" },
+          accessor: "price_per"
+        },
         {
           Header: "จำนวน(บาท)",
           style: { textAlign: "center" },
           id: "price",
           accessor: d => {
-            console.log(' ===')
-            console.log('d.price_per',d.price_per)
-            console.log('this.state.formProjectDetail.project_value', this.state.formProjectDetail.project_value)
-            console.log('return', d.price_per * this.state.formProjectDetail.project_value / 100)
-            return d.price_per * this.state.formProjectDetail.project_value / 100
+            console.log(" ===");
+            console.log("d.price_per", d.price_per);
+            console.log("this.state", this.state);
+            console.log("d.project_value", d.project_value);
+            console.log(
+              "this.state.formProjectDetail.project_value",
+              projectValue
+            );
+            console.log("return", d.price_per * d.project_value / 100);
+
+            return d.price_per * d.project_value / 100;
           }
         },
         {
@@ -437,8 +472,16 @@ class Project extends React.Component {
               .format("DD/MM/YYYY")
         },
         { Header: "จำนวน", style: { textAlign: "center" }, accessor: "amount" },
-        { Header: "ราคา/หน่วย", style: { textAlign: "center" }, accessor: "price_per_unit" },
-        { Header: "ราคารวม", style: { textAlign: "center" }, accessor: "price_total" },
+        {
+          Header: "ราคา/หน่วย",
+          style: { textAlign: "center" },
+          accessor: "price_per_unit"
+        },
+        {
+          Header: "ราคารวม",
+          style: { textAlign: "center" },
+          accessor: "price_total"
+        },
         {
           Header: "หมายเหตุ",
           style: { textAlign: "center" },
@@ -538,7 +581,7 @@ class Project extends React.Component {
             }
           : {
               ...row._original.revenue,
-              price_bath: this.calcucalePredictRevBath(row._original.price),
+              price_bath: this.calcucalePredictRevBath(row._original.price)
             },
       formPredictExp:
         mode === "Add"
@@ -585,7 +628,7 @@ class Project extends React.Component {
                 -543,
                 "year"
               ),
-              withdraw_date_true: (!row._original.withdraw_date_true)
+              withdraw_date_true: !row._original.withdraw_date_true
                 ? null
                 : moment(row._original.withdraw_date_true).add(-543, "year")
             }
@@ -611,19 +654,40 @@ class Project extends React.Component {
   getProjectByID(project_id) {
     fetch(`${API_URL}project/${project_id}`)
       .then(res => res.json())
-      .then(project =>
-        this.setState({
-          formProjectDetail: {
-            ...this.state.formProjectDetail,
-            ...project[0],
-            pact_start_date: moment(project[0].pact_start_date).add(
-              -543,
-              "year"
-            ),
-            pact_end_date: moment(project[0].pact_end_date).add(-543, "year")
+      .then(project => {
+        this.setState(
+          {
+            formProjectDetail: {
+              ...this.state.formProjectDetail,
+              ...project[0],
+              pact_start_date: moment(project[0].pact_start_date).add(
+                -543,
+                "year"
+              ),
+              pact_end_date: moment(project[0].pact_end_date).add(-543, "year")
+            }
+          },
+          () => {
+            this.setState({
+              formProjectDetail: {
+                ...this.state.formProjectDetail,
+                ...project[0],
+                pact_start_date: moment(project[0].pact_start_date).add(
+                  -543,
+                  "year"
+                ),
+                pact_end_date: moment(project[0].pact_end_date).add(
+                  -543,
+                  "year"
+                )
+              }
+            });
+            projectValue = project[0].project_value;
+            this.forceUpdate();
+            console.log("set leawwwwwwwwwwwwwwwww", projectValue);
           }
-        })
-      )
+        );
+      })
       // .then((project) => {
       //   const {pact_start_date} = project[0];
       //   console.log(pact_start_date)
@@ -708,7 +772,7 @@ class Project extends React.Component {
             revenue_id,
             revenue
           }
-        })
+        });
       })
       .catch(err => console.log(err));
   }
@@ -759,7 +823,7 @@ class Project extends React.Component {
       pact_start_date,
       pact_end_date
     } = this.state.formSearch;
-    
+
     let query = [];
     if (project_number !== "") query.push(`project_number=${project_number}`);
     if (project_name !== "") query.push(`project_name=${project_name}`);
@@ -811,7 +875,8 @@ class Project extends React.Component {
       partner_ratio3,
       pact_id,
       employer_name,
-      project_value
+      project_value,
+      revenue
     } = this.state.formProjectDetail;
     fetch(`${API_URL}project/${project_id}`, {
       method: "put",
@@ -833,19 +898,20 @@ class Project extends React.Component {
         pact_start_date: this.formatDateToDB(pact_start_date),
         pact_end_date: this.formatDateToDB(pact_end_date),
         project_value,
-        edit_by: JSON.parse(localStorage.getItem("user")).username
+        edit_by: JSON.parse(localStorage.getItem("user")).username,
+        revenue
       })
     })
       .then(() => {
-        // const {
-        //   project_id,
-        //   revenue_id,
-        //   expenditure_id
-        // } = this.state.formProjectDetail;
+        const {
+          project_id,
+          revenue_id,
+          expenditure_id
+        } = this.state.formProjectDetail;
 
-        // this.getProjectByID(project_id);
-        // this.getRevenue(revenue_id);
-        // this.getExpenditure(expenditure_id);
+        this.getProjectByID(project_id);
+        this.getRevenue(revenue_id);
+        this.getExpenditure(expenditure_id);
         this.closeProjectDetail();
       })
       .catch(err => {
@@ -881,7 +947,7 @@ class Project extends React.Component {
       }
     }
 
-    console.log('formAddProject ==> ', this.state.formAddProject)
+    console.log("formAddProject ==> ", this.state.formAddProject);
 
     const {
       project_name,
@@ -941,15 +1007,18 @@ class Project extends React.Component {
       revenue_id,
       expenditure_id,
       predict_revenue_id,
-      predict_expenditure_id,
+      predict_expenditure_id
     } = row._original;
-    console.log('before delete', row._original)
-    fetch(`${API_URL}project/${project_id}/${revenue_id}/${expenditure_id}/${predict_revenue_id}/${predict_expenditure_id}`, {
-      method: "delete",
-      headers: {
-        "Content-Type": "application/json"
+    console.log("before delete", row._original);
+    fetch(
+      `${API_URL}project/${project_id}/${revenue_id}/${expenditure_id}/${predict_revenue_id}/${predict_expenditure_id}`,
+      {
+        method: "delete",
+        headers: {
+          "Content-Type": "application/json"
+        }
       }
-    })
+    )
       .then(() => {
         this.getProject();
       })
@@ -1212,7 +1281,10 @@ class Project extends React.Component {
   }
 
   deletePredict(row) {
-    Promise.all([this.deletePredictRevenue(row), this.deletePredictExpenditure(row)])
+    Promise.all([
+      this.deletePredictRevenue(row),
+      this.deletePredictExpenditure(row)
+    ])
       .then(() => {
         const {
           project_id,
@@ -1243,26 +1315,6 @@ class Project extends React.Component {
         "Content-Type": "application/json"
       }
     });
-    // .then(() => {
-    //   const {
-    //     project_id,
-    //     revenue_id,
-    //     expenditure_id,
-    //     predict_revenue_id,
-    //     predict_expenditure_id
-    //   } = this.state.formProjectDetail;
-
-    //   this.getProjectByID(project_id);
-    //   this.getRevenue(revenue_id);
-    //   this.getExpenditure(expenditure_id);
-    //   this.getPredictRevenue(predict_revenue_id);
-    //   this.getPredictExpenditure(predict_expenditure_id);
-    //   this.closeRevenue();
-    // })
-    // .catch(err => {
-    //   alert("Not Success");
-    //   console.log(err);
-    // });
   }
 
   deletePredictExpenditure(row) {
@@ -1276,26 +1328,6 @@ class Project extends React.Component {
         }
       }
     );
-    // .then(() => {
-    //   const {
-    //     project_id,
-    //     revenue_id,
-    //     expenditure_id,
-    //     predict_revenue_id,
-    //     predict_expenditure_id
-    //   } = this.state.formProjectDetail;
-
-    //   this.getProjectByID(project_id);
-    //   this.getRevenue(revenue_id);
-    //   this.getExpenditure(expenditure_id);
-    //   this.getPredictRevenue(predict_revenue_id);
-    //   this.getPredictExpenditure(predict_expenditure_id);
-    //   this.closeRevenue();
-    // })
-    // .catch(err => {
-    //   alert("Not Success");
-    //   console.log(err);
-    // });
   }
 
   deleteRevenue(row) {
@@ -1494,57 +1526,67 @@ class Project extends React.Component {
   }
 
   closeProjectDetail() {
-    this.setState({
-      openProjectDetail: false,
-      formProjectDetail: {
-        project_id: "",
-        project_name: "",
-        project_number: "",
-        project_type_id: 1,
-        pact_start_date: moment(),
-        pact_end_date: moment(),
-        partner_name1: "",
-        partner_ratio1: "",
-        partner_name2: "",
-        partner_ratio2: "",
-        partner_name3: "",
-        partner_ratio3: "",
-        project_value: 0,
-        revenue_id: "",
-        expenditure_id: "",
-        pact_id: "",
-        employer_name: "",
-        employer_type: agencyTypes[0].value,
-        revenue: [],
-        expenditure: [],
-        predict_revenue_id: "",
-        predict_expenditure_id: "",
-        predict_revenue: [],
-        predict_expenditure: []
+    this.setState(
+      {
+        openProjectDetail: false,
+        formProjectDetail: {
+          project_id: "",
+          project_name: "",
+          project_number: "",
+          project_type_id: 1,
+          pact_start_date: moment(),
+          pact_end_date: moment(),
+          partner_name1: "",
+          partner_ratio1: "",
+          partner_name2: "",
+          partner_ratio2: "",
+          partner_name3: "",
+          partner_ratio3: "",
+          project_value: 0,
+          revenue_id: "",
+          expenditure_id: "",
+          pact_id: "",
+          employer_name: "",
+          employer_type: agencyTypes[0].value,
+          revenue: [],
+          expenditure: [],
+          predict_revenue_id: "",
+          predict_expenditure_id: "",
+          predict_revenue: [],
+          predict_expenditure: []
+        }
+      },
+      () => {
+        projectValue = 0;
       }
-    });
+    );
   }
 
   closeAddProjectModal() {
-    this.setState({
-      openAddProject: false,
-      formAddProject: {
-        project_name: "",
-        project_type_id: 1,
-        pact_start_date: moment(),
-        pact_end_date: moment(),
-        project_value: 0,
-        partner_name1: "",
-        partner_ratio1: "",
-        partner_name2: "",
-        partner_ratio2: "",
-        partner_name3: "",
-        partner_ratio3: "",
-        pact_id: "",
-        employer_name: "",
-        employer_type: agencyTypes[0].value
+    this.setState(
+      {
+        openAddProject: false,
+        formAddProject: {
+          project_name: "",
+          project_type_id: 1,
+          pact_start_date: moment(),
+          pact_end_date: moment(),
+          project_value: 0,
+          partner_name1: "",
+          partner_ratio1: "",
+          partner_name2: "",
+          partner_ratio2: "",
+          partner_name3: "",
+          partner_ratio3: "",
+          pact_id: "",
+          employer_name: "",
+          employer_type: agencyTypes[0].value
+        }
+      },
+      () => {
+        projectValue = 0;
       }
-    });
+    );
   }
 
   getProject(queryString = "") {
@@ -1591,11 +1633,11 @@ class Project extends React.Component {
     }
   }
 
-  calcucalePredictRevBath = (revPrice) => {
+  calcucalePredictRevBath = revPrice => {
     const { project_value } = this.state.formProjectDetail;
     const price = project_value * revPrice / 100;
-    return price - (price * 3 / 100);
-  }
+    return price - price * 3 / 100;
+  };
 
   closePredict() {
     this.setState({
@@ -1606,7 +1648,7 @@ class Project extends React.Component {
         predict_revenue_det_id: "",
         period: "",
         price: 0,
-        price_bath: 0,
+        price_bath: 0
       },
       formPredictExp: {
         predict_expenditure_id: "",
@@ -1626,21 +1668,24 @@ class Project extends React.Component {
     //     total: 0,
     //   }
     // } else {
-      const rev = formProjectDetail.predict_revenue.reduce((sum, r) => {
-        const price = (formProjectDetail.project_value * r.price) / 100;
-        return sum + (price - (price * 3 / 100));
-      }, 0);
-      const exp = formProjectDetail.predict_expenditure.reduce((sum, e) => sum + e.price, 0);
-      globalSumPredict = {
-        rev,
-        exp,
-        total: rev - exp,
-      }
-      return {
-        rev,
-        exp,
-        total: rev - exp,
-      }
+    const rev = formProjectDetail.predict_revenue.reduce((sum, r) => {
+      const price = formProjectDetail.project_value * r.price / 100;
+      return sum + (price - price * 3 / 100);
+    }, 0);
+    const exp = formProjectDetail.predict_expenditure.reduce(
+      (sum, e) => sum + e.price,
+      0
+    );
+    globalSumPredict = {
+      rev,
+      exp,
+      total: rev - exp
+    };
+    return {
+      rev,
+      exp,
+      total: rev - exp
+    };
     // }
   }
 
@@ -1855,12 +1900,17 @@ class Project extends React.Component {
                       type="text"
                       value={formAddProject.project_value}
                       onChange={e => {
-                        this.setState({
-                          formAddProject: {
-                            ...formAddProject,
-                            project_value: e.target.value
+                        this.setState(
+                          {
+                            formAddProject: {
+                              ...formAddProject,
+                              project_value: e.target.value
+                            }
+                          },
+                          () => {
+                            projectValue = e.target.value;
                           }
-                        });
+                        );
                       }}
                     />
                   </p>
@@ -2326,12 +2376,17 @@ class Project extends React.Component {
                         type="text"
                         value={formProjectDetail.project_value}
                         onChange={e => {
-                          this.setState({
-                            formProjectDetail: {
-                              ...formProjectDetail,
-                              project_value: e.target.value
+                          this.setState(
+                            {
+                              formProjectDetail: {
+                                ...formProjectDetail,
+                                project_value: e.target.value
+                              }
+                            },
+                            () => {
+                              projectValue = 0;
                             }
-                          });
+                          );
                         }}
                       />
                     </p>
@@ -2682,7 +2737,10 @@ class Project extends React.Component {
                 </a>
               </div>
               <ReactTable
-                data={formProjectDetail.revenue}
+                data={formProjectDetail.revenue.map(r => ({
+                  ...r,
+                  project_value: formProjectDetail.project_value
+                }))}
                 columns={this.columnsRevenue}
                 defaultPageSize={5}
                 showPagination={true}

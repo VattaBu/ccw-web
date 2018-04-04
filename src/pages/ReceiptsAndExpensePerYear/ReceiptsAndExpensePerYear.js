@@ -8,27 +8,32 @@ import "./ReceiptsAndExpensePerYear.css";
 
 const API_URL = "http://localhost:5000/api/";
 const yearList = _.range(2561 - 543, 2000 - 543, -1);
-// const mountList = [
-//   { id: 1, value: 'มกราคม' },
-//   { id: 2, value: 'กุมภาพันธ์' },
-//   { id: 3, value: 'มีนาคม' },
-//   { id: 4, value: 'เมษายน' },
-//   { id: 5, value: 'พฤษภาคม' },
-//   { id: 6, value: 'มิถุนายน' },
-//   { id: 7, value: 'กรกฎาคม' },
-//   { id: 8, value: 'สิงหาคม' },
-//   { id: 9, value: 'กันยายน' },
-//   { id: 10, value: 'ตุลาคม' },
-//   { id: 11, value: 'พฤศจิกายน' },
-//   { id: 12, value: 'ธันวาคม' }
-// ];
+const mountList = [
+  'มกราคม',
+  'กุมภาพันธ์',
+  'มีนาคม',
+  'เมษายน',
+  'พฤษภาคม',
+  'มิถุนายน',
+  'กรกฎาคม',
+  'สิงหาคม',
+  'กันยายน',
+  'ตุลาคม',
+  'พฤศจิกายน',
+  'ธันวาคม'
+];
 // add defualt
 // yearList.unshift('---ระบุปี---');
 // mountList.unshift({ id: 0, value: '---ระบุเดือน---' });
 
 const columns = [
   // { Header: "ลำดับ", accessor: "index" },
-  { Header: "เดือน", style: { textAlign: "center" }, accessor: "month" },
+  {
+    Header: "เดือน",
+    style: { textAlign: "center" },
+    id: 'month',
+    accessor: d =>  mountList[d.month - 1]
+  },
   {
     Header: "รายรับ",
     id: 'price_revenue',

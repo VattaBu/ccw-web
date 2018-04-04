@@ -41,7 +41,8 @@ const yearList = _.range(2561, 2000, -1);
 class PerYearPDF extends React.Component {
   state = {
     year: yearList[0],
-    datas: []
+    datas: [],
+    projectNum: 0,
   };
 
   componentWillMount() {
@@ -53,6 +54,7 @@ class PerYearPDF extends React.Component {
   componentDidMount() {
     const { year } = this.props.location.state;
     this.getReceiptsAndExpense(year);
+    this.getProjectInYear(year);
   }
 
   getReceiptsAndExpense(year) {
@@ -62,6 +64,20 @@ class PerYearPDF extends React.Component {
         console.log(datas);
         this.setState({
           datas
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  getProjectInYear(year) {
+    fetch(`${API_URL}projects-in-year/${year + 543}`)
+      .then(res => res.json())
+      .then(({ projectNum }) => {
+        console.log('project number', projectNum );
+        this.setState({
+          projectNum
         });
       })
       .catch(error => {
@@ -117,7 +133,7 @@ class PerYearPDF extends React.Component {
   }
 
   render() {
-    const { datas } = this.state;
+    const { datas, projectNum } = this.state;
     const { year } = this.props.location.state;
     const datasChart = {
       labels: [
@@ -193,7 +209,7 @@ class PerYearPDF extends React.Component {
                 flex: 1,
               }}
             >
-              <p>จำนวน: {datas.length} Wrong โครงการ</p>
+              <p>จำนวน: {projectNum} โครงการ</p>
             </div>
           </div>
           <br />
