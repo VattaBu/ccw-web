@@ -909,6 +909,7 @@ class Project extends React.Component {
           expenditure_id
         } = this.state.formProjectDetail;
 
+        this.getProject();
         this.getProjectByID(project_id);
         this.getRevenue(revenue_id);
         this.getExpenditure(expenditure_id);
