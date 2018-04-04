@@ -62,7 +62,7 @@ table.pdf, th, td {
   border: 1px solid black;
 }
 
-table.pdf, th {
+table.pdf, th, td {
   text-align: center !important;
 }
 

@@ -4,6 +4,7 @@ import ReactTable from "react-table";
 import ReactModal from "react-modal";
 import DatePicker from "react-datepicker";
 import moment from "moment";
+import $ from 'jquery';
 import plusIconImage from "../../assets/icon/plus-icon.png";
 import deleteIconImage from "../../assets/icon/empty-icon.png";
 import editIconImage from "../../assets/icon/edit-icon.png";
@@ -616,10 +617,7 @@ class Project extends React.Component {
             }
           : {
               ...row._original,
-              price:
-                row._original.price_per *
-                this.state.formProjectDetail.project_value /
-                100,
+              price: row._original.price_per * this.state.formProjectDetail.project_value / 100,
               withdraw_date: moment(row._original.withdraw_date).add(
                 -543,
                 "year"
@@ -648,7 +646,17 @@ class Project extends React.Component {
     this.getExpenditure(expenditure_id);
     this.getPredictRevenue(predict_revenue_id);
     this.getPredictExpenditure(predict_expenditure_id);
-    this.setState({ openProjectDetail: true });
+    this.setState({ openProjectDetail: true }, () => { this.test() });
+  }
+
+  test() {
+    console.log('query', $('.rt-tfoot .rt-tr .rt-td'))
+    $('.rt-tfoot .rt-tr .rt-td').map(function(i) {
+      console.log('index', i)
+      if (i === 0 || i === 2 || i === 4) {
+        $(this).remove();
+      }
+    })
   }
 
   getProjectByID(project_id) {
@@ -1602,7 +1610,9 @@ class Project extends React.Component {
   calculateSumRevenue() {
     const sumRevenue = this.state.formProjectDetail.revenue.reduce(
       (sum, r) =>
-        this.state.formProjectDetail.project_value * r.price_per / 100 + sum,
+        (r.status === statuss[1].value)
+          ? sum
+          :this.state.formProjectDetail.project_value * r.price_per / 100 + sum,
       0
     );
     const tax = sumRevenue * 3 / 100;

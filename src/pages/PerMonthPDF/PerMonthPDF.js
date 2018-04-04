@@ -239,9 +239,11 @@ class PerMonthPDF extends React.Component {
           <table className="pdf">
             <thead>
               <tr>
-                <th>เดือน</th>
+                <th>โครงการ</th>
                 <th>รายรับ</th>
                 <th>รายจ่าย</th>
+                <th>เดือน</th>
+                <th>คงเหลือ</th>
               </tr>
             </thead>
             <tbody>
@@ -250,6 +252,8 @@ class PerMonthPDF extends React.Component {
                   <td>{t}</td>
                   <td>{resultRev[i]}</td>
                   <td>{resultExp[i]}</td>
+                  <td>{MONTH_TEXT[month]}</td>
+                  <td>{resultRev[i] - resultExp[i]}</td>
                 </tr>
               ))}
             </tbody>

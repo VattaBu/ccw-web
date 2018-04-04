@@ -371,6 +371,18 @@ class ProjectPDF extends React.Component {
                   <td>{idx(formProjectDetail.predict_expenditure, _ => _[i].price)}</td>
                 </tr>
               ))}
+              <tr>
+                <td colSpan={2}>รวม {
+                  formProjectDetail.predict_revenue.reduce((sum, r) => (
+                    this.calcucalePredictRevBath(r.price) + sum
+                  ), 0)
+                } บาท</td>
+                <td colSpan={2}>รวม {
+                  formProjectDetail.predict_expenditure.reduce((sum, e) => (
+                    e.price + sum
+                  ), 0)
+                } บาท</td>
+              </tr>
             </tbody>
           </table>
           <br />
@@ -392,9 +404,12 @@ class ProjectPDF extends React.Component {
                 <tr>
                   <td>{r.period}</td>
                   <td>
-                    {moment(r.withdraw_date_true)
-                      .add(-543, "year")
-                      .format("DD/MM/YYYY")}
+                    {
+                      (!r.withdraw_date_true)
+                      ? null
+                      : moment(r.withdraw_date_true)
+                        .add(-543, "year")
+                        .format("DD/MM/YYYY")}
                   </td>
                   <td>{r.price_per}</td>
                   <td>{r.price_per * formProjectDetail.project_value / 100}</td>
@@ -417,7 +432,7 @@ class ProjectPDF extends React.Component {
               <tr>
                 <th>งวด</th>
                 <th>&nbsp;&nbsp; วันที่ &nbsp;&nbsp;</th>
-                <th>รายการ</th>
+                <th style={{ textAlign: 'left' }} >รายการ</th>
                 <th>จำนวน</th>
                 <th>ราคา/หน่วย</th>
                 <th>ราคารวม</th>
@@ -433,7 +448,7 @@ class ProjectPDF extends React.Component {
                       .add(-543, "year")
                       .format("DD/MM/YYYY")}
                   </td>
-                  <td>{e.expenditure_item}</td>
+                  <td style={{ textAlign: 'left' }} >{e.expenditure_item}</td>
                   <td>{e.amount}</td>
                   <td>{e.price_per_unit}</td>
                   <td>{e.price_total}</td>

@@ -229,6 +229,11 @@ class PerYearPDF extends React.Component {
                   <td>{this.generateDataChart().resultExp[i]}</td>
                 </tr>
               ))}
+              <tr>
+              <td>รวม</td>
+              <td>{this.generateDataChart().resultRev.reduce((sum, r) => sum + r, 0)}</td>
+              <td>{this.generateDataChart().resultExp.reduce((sum, e) => sum + e, 0)}</td>
+              </tr>
             </tbody>
           </table>
           <br />
