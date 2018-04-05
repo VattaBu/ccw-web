@@ -53,11 +53,32 @@ class ProjectPDF extends React.Component {
   };
 
   calculateSumRevenue() {
+    // return this.state.formProjectDetail.revenue.reduce(
+    //   (sum, r) => r.price + sum,
+    //   0
+    // );
+
     return this.state.formProjectDetail.revenue.reduce(
-      (sum, r) => r.price + sum,
+      (sum, r) =>
+        (r.status === "NOT_RECEIVE")
+          ? sum
+          :this.state.formProjectDetail.project_value * r.price_per / 100 + sum,
       0
     );
   }
+
+  // calculateSumRevenue() {
+  //   const sumRevenue = this.state.formProjectDetail.revenue.reduce(
+  //     (sum, r) =>
+  //       (r.status === statuss[1].value)
+  //         ? sum
+  //         :this.state.formProjectDetail.project_value * r.price_per / 100 + sum,
+  //     0
+  //   );
+  //   const tax = sumRevenue * 3 / 100;
+  //   const all = sumRevenue - tax;
+  //   return { sumRevenue, tax, all };
+  // }
 
   calculateSumExpenditure() {
     return this.state.formProjectDetail.expenditure.reduce(
@@ -418,7 +439,7 @@ class ProjectPDF extends React.Component {
               ))}
               <tr>
                 <td colSpan={5} style={{ textAlign: 'right', paddingRight: '10px' }} >
-                  สรุปรายรับ: {this.calculateSumRevenue()} บาท
+                  สรุปรายรับ: {this.calculateSumRevenue()} บาท (คำนวณเฉพาะรายรับที่ได้รับแล้ว)
                 </td>
               </tr>
             </tbody>
